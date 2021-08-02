@@ -1,32 +1,69 @@
 import React, { Component } from "react";
-import Profile from "./profile/Profile";
-import Skill from "../components/profile/Skill";
-import Bio from "../components/profile/Bio";
-import Social from "../components/profile/Social";
 
 class App extends Component {
-  render() {
-    let me = {
-      name: "Sumaiya Akter",
-      title: "Full stack developer",
-    };
-    let skills = {
-      skill1: "Bootstrap",
-      skill2: "Tailwind",
-      skill3: "HTML5",
-    };
-    return (
-      <div>
-        <Profile />
-        <div className="app">
-          <Bio name={me.name} title={me.title} />
+  state = {
+    count: 0,
+  };
 
-          <Skill
-            skill1={skills.skill1}
-            skill2={skills.skill2}
-            skill3={skills.skill3}
-          />
-          <Social />
+  intervalId = null;
+
+  incrementCount = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  decrementCount = () => {
+    if (this.state.count > 0) {
+      this.setState({ count: this.state.count - 1 });
+    }
+  };
+
+  startCount = () => {
+    if (this.state.count > 0 && !this.intervalId) {
+      this.intervalId = setInterval(() => {
+        this.setState({ count: this.state.count - 1 }, () => {
+          if (this.state.count === 0) {
+            alert("Timer finished !");
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+          }
+        });
+      }, 1000);
+    }
+  };
+
+  stopCount = () => {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  };
+
+  resetCount = () => {
+    this.setState({ count: 0 });
+    clearInterval(this.intervalId);
+    this.intervalId = null;
+  };
+
+  render() {
+    return (
+      <div className="app">
+        <h1>React timer</h1>
+        <hr />
+
+        <button onClick={this.decrementCount}>-</button>
+        <span>{this.state.count}</span>
+        <button onClick={this.incrementCount}>+</button>
+        <div
+          style={{
+            marginTop: "30px",
+            display: "flex",
+            gap: "20px",
+            justifyContent: "center",
+          }}
+        >
+          <button onClick={this.startCount}>Start</button>
+          <button onClick={this.stopCount}>Stop</button>
+          <button onClick={this.resetCount}>Reset</button>
         </div>
       </div>
     );
