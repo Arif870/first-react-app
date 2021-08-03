@@ -1,72 +1,112 @@
 import React, { Component } from "react";
+import Styles from "./FormStyle.module.css";
 
 class App extends Component {
   state = {
-    count: 0,
+    name: "",
+    country: "",
+    bio: "",
+    birthday: "",
+    gender: "",
+    agree: false,
+  };
+  changeHandalar = event => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   };
 
-  intervalId = null;
-
-  incrementCount = () => {
-    this.setState({ count: this.state.count + 1 });
+  changeAgreeHnadalar = event => {
+    this.setState({
+      agree: event.target.checked,
+    });
   };
-
-  decrementCount = () => {
-    if (this.state.count > 0) {
-      this.setState({ count: this.state.count - 1 });
-    }
-  };
-
-  startCount = () => {
-    if (this.state.count > 0 && !this.intervalId) {
-      this.intervalId = setInterval(() => {
-        this.setState({ count: this.state.count - 1 }, () => {
-          if (this.state.count === 0) {
-            alert("Timer finished !");
-            clearInterval(this.intervalId);
-            this.intervalId = null;
-          }
-        });
-      }, 1000);
-    }
-  };
-
-  stopCount = () => {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
-  };
-
-  resetCount = () => {
-    this.setState({ count: 0 });
-    clearInterval(this.intervalId);
-    this.intervalId = null;
-  };
-
   render() {
+    const { name, country, bio, birthday, agree } = this.state;
     return (
-      <div className="app">
-        <h1>React timer</h1>
+      <div className={Styles.forms}>
+        <h1>Working with forms in React</h1>
         <hr />
-
-        <button onClick={this.decrementCount}>-</button>
-        <span>{this.state.count}</span>
-        <button onClick={this.incrementCount}>+</button>
-        <div
-          style={{
-            marginTop: "30px",
-            display: "flex",
-            gap: "20px",
-            justifyContent: "center",
+        <h3>About yourself : </h3>
+        <input
+          className={Styles.formControl}
+          type="text"
+          name="name"
+          value={name}
+          placeholder="Please enter your name"
+          onChange={this.changeHandalar}
+        />
+        <select
+          name="country"
+          className={Styles.formControl}
+          onChange={this.changeHandalar}
+          value={country}
+        >
+          <option>-Select-</option>
+          <option value="Bangladesh">Bangladesh</option>
+          <option value="India">India</option>
+          <option value="Australia">Australia</option>
+        </select>
+        <textarea
+          value={bio}
+          onChange={this.changeHandalar}
+          className={Styles.formControl}
+          name="bio"
+          id=""
+          rows="5"
+          placeholder="Tell us about yourself"
+        ></textarea>
+        <input
+          style={{ marginBottom: "20px" }}
+          value={birthday}
+          onChange={this.changeHandalar}
+          name="birthday"
+          className={Styles.formControl}
+          type="date"
+        />
+        <input
+          type="radio"
+          name="gender"
+          value="Male"
+          onChange={this.changeHandalar}
+        />
+        Male
+        <input
+          type="radio"
+          name="gender"
+          value="Female"
+          onChange={this.changeHandalar}
+          style={{ marginLeft: "10px" }}
+        />
+        Female
+        <input
+          type="radio"
+          name="gender"
+          value="Others"
+          style={{ marginLeft: "10px" }}
+          onChange={this.changeHandalar}
+        />
+        Others
+        <br />
+        <br />
+        <input
+          type="checkbox"
+          name="agree"
+          checked={agree}
+          onChange={this.changeAgreeHnadalar}
+        />
+        Agree all the terms and conditions
+        <br />
+        <button
+          onClick={() => {
+            console.log(this.state);
           }}
         >
-          <button onClick={this.startCount}>Start</button>
-          <button onClick={this.stopCount}>Stop</button>
-          <button onClick={this.resetCount}>Reset</button>
-        </div>
+          Show in Console
+        </button>
       </div>
     );
   }
 }
+
 export default App;
